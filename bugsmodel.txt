@@ -1,0 +1,265 @@
+model{                               #Begin model
+
+#b and z set as constant throughout the sample
+#Likelihood 
+
+for (kk in 1:TM){
+svsigma21[kk]<-exp(theta1[kk]/2)
+svsigma22[kk]<-exp(theta2[kk]/2)
+svsigma23[kk]<-exp(theta3[kk]/2)
+svsigmaCU[kk]<-exp(theta4[kk]/2)
+svsigmaPI[kk]<-exp(theta5[kk]/2)
+svsigmaFFR[kk]<-exp(theta6[kk]/2)
+svsigma2[kk]<-exp(theta[kk]/2)
+lambda1[kk]<-exp(plambda1[kk])
+
+for (i in 1:counters[kk])
+   {yields[kk,i]~dnorm(m[kk,i],svsigma2[kk])
+   
+   m[kk,i]<- abs(beta1[kk])+
+   beta2[kk]*(1-exp(-lambda1[kk]*Maturity[kk,i]))/(lambda1[kk]*Maturity[kk,i])+
+   beta3[kk]*((1-exp(-lambda1[kk]*Maturity[kk,i]))/(lambda1[kk]*Maturity[kk,i])-exp(-lambda1[kk]*Maturity[kk,i]))
+ 
+  }
+}
+
+
+theta0~dnorm(sv0,itau2)
+thmean[1] <- (sv0/(1-sv1)); 
+theta[1]~dnorm(thmean[1],itau2)
+for (j in 2:TM){
+thmean[j] <- (sv0 + (sv1*theta[j-1]-sv0));
+theta[j]~dnorm(thmean[j],itau2)
+}
+
+itau2 ~ dgamma(6.5,2.25);                                                      
+     
+sv0~ dnorm(-5,0.2);   
+sv1~dnorm( 0.95,.03)I(-1.1,1.1)
+
+
+theta01~dnorm(sv01,itau21)
+thmean1[1] <- (sv01/(1-sv11)); 
+theta1[1]~dnorm(thmean1[1],itau21)
+for (j in 2:TM){
+thmean1[j] <- (sv01 + (sv11*theta1[j-1]-sv01));
+theta1[j]~dnorm(thmean1[j],itau21)
+}
+
+itau21 ~ dgamma(2.5,1.25);                                                        
+      
+sv01~ dnorm(-8.375931,0.02);   
+sv11~dnorm( 0.9,.05)I(-1.1,1.1)
+
+
+theta02~dnorm(sv02,itau22)
+thmean2[1] <- (sv02/(1-sv12)); 
+theta2[1]~dnorm(thmean2[1],itau22)
+for (j in 2:TM){
+thmean2[j] <- (sv02 + (sv12*theta2[j-1]-sv02));
+theta2[j]~dnorm(thmean2[j],itau22)
+}
+
+
+itau22 ~ dgamma(2.5,1.25);                                                     
+      
+sv02~ dnorm(-13,0.2);   
+sv12~dnorm( 0.90,.03)I(-1.1,1.1)
+
+
+
+theta03~dnorm(sv03,itau23)
+thmean3[1] <- (sv03/(1-sv13)); 
+theta3[1]~dnorm(thmean3[1],itau23)
+for (j in 2:TM){
+thmean3[j] <- (sv03 + (sv13*theta3[j-1]-sv03));
+theta3[j]~dnorm(thmean3[j],itau23)
+}
+
+
+itau23 ~ dgamma(4.5,1.25);                                                        
+      
+sv03~ dnorm(-12,0.2);   
+sv13~dnorm( 0.9954992,.03)I(-1.1,1.1)
+
+
+theta04~dnorm(sv04,itau24)
+thmean4[1] <- (sv04/(1-sv14)); 
+theta4[1]~dnorm(thmean4[1],itau24)
+for (j in 2:TM){
+thmean4[j] <- (sv04 + (sv14*theta4[j-1]-sv04));
+theta4[j]~dnorm(thmean4[j],itau24)
+}
+
+
+itau24 ~ dgamma(4.5,1.25);                                                        
+      
+sv04~ dnorm(-12,0.2);   
+sv14~dnorm( 0.9954992,.03)I(-1.1,1.1)
+
+
+
+theta05~dnorm(sv05,itau25)
+thmean5[1] <- (sv05/(1-sv15)); 
+theta5[1]~dnorm(thmean5[1],itau25)
+for (j in 2:TM){
+thmean5[j] <- (sv05 + (sv15*theta5[j-1]-sv05));
+theta5[j]~dnorm(thmean5[j],itau25)
+}
+
+
+itau25 ~ dgamma(4.5,1.25);                                                        
+      
+sv05~ dnorm(-12,0.2);   
+sv15~dnorm( 0.9954992,.03)I(-1.1,1.1)
+
+
+theta06~dnorm(sv06,itau26)
+thmean6[1] <- (sv06/(1-sv16)); 
+theta6[1]~dnorm(thmean6[1],itau26)
+for (j in 2:TM){
+thmean6[j] <- (sv06 + (sv16*theta6[j-1]-sv06));
+theta6[j]~dnorm(thmean6[j],itau26)
+}
+
+itau26 ~ dgamma(4.5,1.25);                                                        
+      
+sv06~ dnorm(-12,0.2);   
+sv16~dnorm( 0.9954992,.03)I(-1.1,1.1)
+
+plambda1[1]<-phil11/(1-phil12)
+
+beta1[1]<-phi1[1,1]/(1-phi1[1,2]+phi1[1,3]+phi1[1,4]+phi1[1,5]+phi1[1,6]+phi1[1,7])
+beta2[1]<-phi1[2,1]/(1-phi1[2,2]+phi1[2,3]+phi1[2,4]+phi1[2,5]+phi1[2,6]+phi1[2,7])
+beta3[1]<-phi1[3,1]/(1-phi1[3,2]+phi1[3,3]+phi1[3,4]+phi1[3,5]+phi1[3,6]+phi1[3,7])
+
+
+elambdasigma1~dgamma(4.5,1.25)
+
+
+for (kk in 1:TM){
+mbeta1[kk]<-beta1[kk]
+mbeta2[kk]<-beta2[kk]
+mbeta3[kk]<-beta3[kk]
+   mCU[kk]<-CU[kk]	
+  mFFR[kk]<-FFR[kk]	
+   mPI[kk]<-PI[kk]	
+}
+
+
+for (kk in 2:TM){
+
+beta1[kk]~dnorm(betae1[kk],svsigma21[kk])
+beta2[kk]~dnorm(betae2[kk],svsigma22[kk])
+beta3[kk]~dnorm(betae3[kk],svsigma23[kk])
+
+CU[kk]~dnorm(CUe[kk],svsigmaCU[kk])
+PI[kk]~dnorm(PIe[kk],svsigmaPI[kk])
+FFR[kk]~dnorm(FFRe[kk],svsigmaFFR[kk])
+
+betae1[kk]<-  phi1[1,1]+phi1[1,2]*mbeta1[kk-1]+phi1[1,3]*mbeta2[kk-1]+phi1[1,4]*mbeta3[kk-1] +phi1[1,5]*mCU[kk-1]+phi1[1,6]*mFFR[kk-1]+phi1[1,7]*mPI[kk-1]
+betae2[kk]<-  phi1[2,1]+phi1[2,2]*mbeta1[kk-1]+phi1[2,3]*mbeta2[kk-1]+phi1[2,4]*mbeta3[kk-1] +phi1[2,5]*mCU[kk-1]+phi1[2,6]*mFFR[kk-1]+phi1[2,7]*mPI[kk-1]
+betae3[kk]<-  phi1[3,1]+phi1[3,2]*mbeta1[kk-1]+phi1[3,3]*mbeta2[kk-1]+phi1[3,4]*mbeta3[kk-1] +phi1[3,5]*mCU[kk-1]+phi1[3,6]*mFFR[kk-1]+phi1[3,7]*mPI[kk-1]
+   CUe[kk]<-  phi1[4,1]+phi1[4,2]*mbeta1[kk-1]+phi1[4,3]*mbeta2[kk-1]+phi1[4,4]*mbeta3[kk-1] +phi1[4,5]*mCU[kk-1]+phi1[4,6]*mFFR[kk-1]+phi1[4,7]*mPI[kk-1] 
+  FFRe[kk]<-  phi1[5,1]+phi1[5,2]*mbeta1[kk-1]+phi1[5,3]*mbeta2[kk-1]+phi1[5,4]*mbeta3[kk-1] +phi1[5,5]*mCU[kk-1]+phi1[5,6]*mFFR[kk-1]+phi1[5,7]*mPI[kk-1]
+   PIe[kk]<-  phi1[6,1]+phi1[6,2]*mbeta1[kk-1]+phi1[6,3]*mbeta2[kk-1]+phi1[6,4]*mbeta3[kk-1] +phi1[6,5]*mCU[kk-1]+phi1[6,6]*mFFR[kk-1]+phi1[6,7]*mPI[kk-1] 
+ 
+plambda1[kk]~dnorm(plambda1e[kk],elambdasigma1)
+plambda1e[kk]<-phil11+phil12*plambda1[kk-1]
+
+}
+
+mphi[1:42]~dmnorm(mediaphi[1:42],varphi[,])
+
+phi1[1,1]<-mphi[1]
+phi1[2,1]<-mphi[2]
+phi1[3,1]<-mphi[3]
+phi1[4,1]<-mphi[4]
+phi1[5,1]<-mphi[5]
+phi1[6,1]<-mphi[6]
+phi1[1,2]<-mphi[7]
+phi1[2,2]<-mphi[8]
+phi1[3,2]<-mphi[9]
+phi1[4,2]<-mphi[10]
+phi1[5,2]<-mphi[11]
+phi1[6,2]<-mphi[12]
+phi1[1,3]<-mphi[13]
+phi1[2,3]<-mphi[14]
+phi1[3,3]<-mphi[15]
+phi1[4,3]<-mphi[16]
+phi1[5,3]<-mphi[17]
+phi1[6,3]<-mphi[18]
+phi1[1,4]<-mphi[19]
+phi1[2,4]<-mphi[20]
+phi1[3,4]<-mphi[21]
+phi1[4,4]<-mphi[22]
+phi1[5,4]<-mphi[23]
+phi1[6,4]<-mphi[24]
+phi1[1,5]<-mphi[25]
+phi1[2,5]<-mphi[26]
+phi1[3,5]<-mphi[27]
+phi1[4,5]<-mphi[28]
+phi1[5,5]<-mphi[29]
+phi1[6,5]<-mphi[30]
+phi1[1,6]<-mphi[31]
+phi1[2,6]<-mphi[32]
+phi1[3,6]<-mphi[33]
+phi1[4,6]<-mphi[34]
+phi1[5,6]<-mphi[35]
+phi1[6,6]<-mphi[36]
+phi1[1,7]<-mphi[37]
+phi1[2,7]<-mphi[38]
+phi1[3,7]<-mphi[39]
+phi1[4,7]<-mphi[40]
+phi1[5,7]<-mphi[41]
+phi1[6,7]<-mphi[42]
+
+mediaphi[1]<-0.02967
+mediaphi[2]<--0.01184 
+mediaphi[3]<-0.008462  
+mediaphi[4]<-0.02444  
+mediaphi[5]<-0.02441  
+mediaphi[6]<-0.041 
+mediaphi[7]<-.98  
+mediaphi[8]<-0  
+mediaphi[9]<-0  
+mediaphi[10]<-0 
+mediaphi[11]<-0 
+mediaphi[12]<-0 
+mediaphi[13]<-0 
+mediaphi[14]<-0.95 
+mediaphi[15]<-0
+mediaphi[16]<-0 
+mediaphi[17]<-0 
+mediaphi[18]<-0 
+mediaphi[19]<-0 
+mediaphi[20]<-0 
+mediaphi[21]<-0.9 
+mediaphi[22]<-0 
+mediaphi[23]<-0 
+mediaphi[24]<-0 
+mediaphi[25]<-0 
+mediaphi[26]<-0 
+mediaphi[27]<-0 
+mediaphi[28]<-.99
+mediaphi[29]<-0 
+mediaphi[30]<-0 
+mediaphi[31]<-0 
+mediaphi[32]<-0 
+mediaphi[33]<-0 
+mediaphi[34]<-0 
+mediaphi[35]<-0.9
+mediaphi[36]<-0 
+mediaphi[37]<-0 
+mediaphi[38]<-0 
+mediaphi[39]<-0 
+mediaphi[40]<-0 
+mediaphi[41]<-0 
+mediaphi[42]<-0.85
+		
+varphi[1:42,1:42]~dwish(R[,],42)
+
+phil11~dnorm(-2.798522,.002)
+phil12~dnorm(.5,.2)I(-1.1,1.1)
+
+}
