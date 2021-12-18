@@ -1,7 +1,7 @@
 # DNS_macro_sv
 Implementation of the DNS macro-sv yield curve model
 
-The 'model.txt' file contains the script for fitting the DNS macro-sv model. The Diebold & Li (2006) DNS yields only model is used as reference.
+The 'model.txt' file contains the script for fitting the DNS macro-sv model. The Diebold & Li (2006) Dynamic Nelson-Siegel yields only (DNS) model is used as reference.
 
 The 'bugsmodel.txt' file contains the script for the WinBUGS algorithm.
 
