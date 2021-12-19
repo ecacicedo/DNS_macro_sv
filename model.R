@@ -1,5 +1,5 @@
 # Macro-Finance yield Curve Modeling with Stochastic Volatility
-# Author: ecacicedo (adapted from Prof. Laurini)
+# Author: ecacicedo (expanded from Prof. Laurini's)
 # 21/05/2012
 
 # Set up
